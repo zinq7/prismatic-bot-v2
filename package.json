@@ -1,0 +1,23 @@
+{
+  "name": "anewbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "load": "node deploy-commands.js",
+    "bot": "node bot.js"
+  },
+  "keywords": [],
+  "author": "zinq",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.26.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "fs-extra": "^10.1.0",
+    "java": "^0.12.2",
+    "jimp": "^0.16.2"
+  }
+}
