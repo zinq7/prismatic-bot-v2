@@ -76,7 +76,7 @@ module.exports = {
             }).then((obj) => fs.writeFile("leaderboards.json", JSON.stringify(obj)))
             .catch(e => console.error(e));
 
-        await interaction.followUp(`${runData.user}'s ${runData.char} run submitted!`);
+        await interaction.followUp(`${runData.user}'s ${runData.char} **` + runData.timeM + ":" + toTwo(runData.timeS) + "." + toTwo(runData.timeL) + `** run submitted!`);
 
         // call execute with lbMessage
         let msg = interaction.client.channels.cache.get(config.lbchannel).messages;
@@ -84,4 +84,10 @@ module.exports = {
         msg.fetch(config.lbmessage)
             .then(m => update.execute(m));
     }
+}
+
+function toTwo(time) {
+    if ((time+"").length == 1) {
+        return "0" + time + "";
+    } else return time;
 }

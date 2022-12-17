@@ -8,21 +8,28 @@ module.exports = {
         fs.readJSON('leaderboards.json').then(obj => {
             let embed = new discord.EmbedBuilder();
             embed.setColor("ff99ff");
-            embed.setTitle("Top 50 Leaderboards");
-
+            embed.setTitle("CHARACTER LEADERBOARDS");
+            embed.setDescription("--------------------------------------------------------------------------");
+            
             
             let fieldArr = [];
             for (let i = 0; i < obj.leaderboards.length && i < 50; i++) {
-
                 let lbEntry = obj.leaderboards[i];
                 let fieldObj = {};
-                fieldObj.name = "Position " + (i + 1);
-                fieldObj.value = lbEntry.char + " as " + lbEntry.user
-                    + ": **" + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL) + "**\n";
+                fieldObj.name = lbEntry.char + " " + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL)  + " ~ " + lbEntry.user + " (#" + (i + 1) + ")\n";
+                fieldObj.value = "\u200b";
 
-                fieldArr.push(fieldObj);
+                let indexOf = fieldArr.findIndex(x => x.name.includes(lbEntry.char));
+                if (indexOf != -1) {
+                    fieldArr[indexOf].value += "--> **" + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL) + "** ~ " + lbEntry.user +  " (#" + (i + 1) + ")\n"; 
+                } else {
+                    fieldArr.push(fieldObj);
+                }                
             }
-
+            
+            for (let  i = 0; i < fieldArr.length; i++) {
+                fieldArr[i].value += "--------------------------------------------------------------------------";
+            }
             embed.addFields(fieldArr);
 
             if (config.shouldlb) {
