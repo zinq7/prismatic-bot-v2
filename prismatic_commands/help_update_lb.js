@@ -9,28 +9,34 @@ module.exports = {
             let embed = new discord.EmbedBuilder();
             embed.setColor("ff99ff");
             embed.setTitle("CHARACTER LEADERBOARDS");
-            embed.setDescription("--------------------------------------------------------------------------");
+            // embed.setDescription("----------------------------------------------------------");
             
             
             let fieldArr = [];
             for (let i = 0; i < obj.leaderboards.length && i < 50; i++) {
                 let lbEntry = obj.leaderboards[i];
                 let fieldObj = {};
-                fieldObj.name = lbEntry.char + " " + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL)  + " ~ " + lbEntry.user + " (#" + (i + 1) + ")\n";
+                fieldObj.name =  padTo(lbEntry.char, 20) + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL) + " ~ " + lbEntry.user + " (#" + (i + 1) + ")\n";
                 fieldObj.value = "\u200b";
 
                 let indexOf = fieldArr.findIndex(x => x.name.includes(lbEntry.char));
                 if (indexOf != -1) {
-                    fieldArr[indexOf].value += "--> **" + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL) + "** ~ " + lbEntry.user +  " (#" + (i + 1) + ")\n"; 
+                    fieldArr[indexOf].value += padTo(" -", 20) + lbEntry.timeM + ":" + toTwo(lbEntry.timeS) + "." + toTwo(lbEntry.timeL) + " ~ " + lbEntry.user +  " (#" + (i + 1) + ")\n"; 
                 } else {
                     fieldArr.push(fieldObj);
-                }                
+                }
             }
             
+            let desc = "\u200b";
             for (let  i = 0; i < fieldArr.length; i++) {
-                fieldArr[i].value += "--------------------------------------------------------------------------";
+                fieldArr[i].value += "-------------------------------------------------------";
+                // fieldArr[i].name = code(fieldArr[i].name);
+                // fieldArr[i].value = code(fieldArr[i].value);
+                desc += fieldArr[i].name;
+                desc += fieldArr[i].value + "\n";
             }
-            embed.addFields(fieldArr);
+            embed.setDescription(code(desc));
+            //embed.addFields(fieldArr);
 
             if (config.shouldlb) {
                 lbmessage.edit({embeds: [embed]});
@@ -44,4 +50,16 @@ function toTwo(time) {
         return "0" + time + "";
     } else return time;
 }
-// i'm on this rn, but good progreessss
+
+function padTo(str, padding) {
+    let string = str;
+    while (string.length < padding) {
+        string += " ";
+    }
+    string += "\u200b";
+    return string;
+}
+
+function code(str) {
+    return "```" + str + "```";
+}
